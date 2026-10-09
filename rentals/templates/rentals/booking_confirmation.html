@@ -1,0 +1,22 @@
+{% extends 'rentals/base.html' %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto bg-white p-10 rounded-xl shadow-xl text-center border border-gray-200">
+    <h1 class="text-4xl font-extrabold text-green-600 mb-4">Booking Confirmed!</h1>
+    <p class="text-lg text-slate-600 mb-8">Thank you, {{ booking.user.username }}. Your rental is confirmed and details are below.</p>
+
+    <div class="text-left bg-slate-50 border border-gray-200 rounded-lg p-6 my-8">
+        <h2 class="text-2xl font-bold text-slate-800 mb-4">Booking Summary</h2>
+        <div class="space-y-3 text-slate-700">
+            <p><strong class="font-semibold w-32 inline-block">Car:</strong> {{ booking.car.name }}</p>
+            <p><strong class="font-semibold w-32 inline-block">Start Date:</strong> {{ booking.start_date }}</p>
+            <p><strong class="font-semibold w-32 inline-block">End Date:</strong> {{ booking.end_date }}</p>
+            <p class="text-2xl font-bold text-primary-blue mt-4"><strong class="font-semibold text-slate-800 w-32 inline-block">Total Cost:</strong> Rs.{{ booking.total_cost }}</p>
+        </div>
+    </div>
+
+    <a href="{% url 'home' %}" class="inline-block bg-primary-blue text-white py-3 px-8 rounded-full font-semibold text-lg hover:bg-secondary-orange transition-all transform hover:-translate-y-1 shadow-md">
+        Back to Home
+    </a>
+</div>
+{% endblock %}

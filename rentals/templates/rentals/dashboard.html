@@ -1,0 +1,44 @@
+{% extends 'rentals/base.html' %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto">
+    <h1 class="text-4xl font-extrabold text-slate-800 mb-10">My Bookings</h1>
+
+    {% if bookings %}
+        <div class="space-y-8">
+            {% for booking in bookings %}
+            <div class="bg-white rounded-xl shadow-xl overflow-hidden flex flex-col sm:flex-row border border-gray-200 hover:shadow-2xl transition-shadow duration-300">
+                <img src="{{ booking.car.image_url|default:'https://placehold.co/600x400' }}" alt="{{ booking.car.name }}" class="w-full sm:w-1/3 h-56 sm:h-auto object-cover">
+                <div class="p-7 flex-grow flex flex-col justify-between">
+                    <div>
+                        <h2 class="text-2xl font-bold text-slate-800">{{ booking.car.name }}</h2>
+                        <p class="text-slate-600 mt-3 text-base">
+                            <strong class="font-semibold text-slate-800">Rented From:</strong> {{ booking.start_date }} to {{ booking.end_date }}
+                        </p>
+                        <p class="mt-4 text-3xl font-bold text-primary-blue">Total Bill: Rs.{{ booking.total_cost }}</p>
+                    </div>
+                    <div class="mt-6 pt-5 border-t border-gray-100 flex items-center justify-end space-x-4">
+                        {% if booking.is_approved %}
+                            <span class="px-3 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">Approved</span>
+                            {% if booking.start_date > today %}
+                            <form action="{% url 'my_cancel_booking' booking.id %}" method="post" onsubmit="return confirm('Are you sure you want to cancel this booking? Cancellation is only allowed up to 2 days before the start date.');">
+                                {% csrf_token %}
+                                <button type="submit" class="font-semibold text-red-600 hover:text-red-800 transition-colors">Cancel</button>
+                            </form>
+                            {% endif %}
+                        {% else %}
+                            <span class="px-3 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800">Canceled</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="text-center py-20 bg-white rounded-xl shadow-xl border border-gray-200">
+            <p class="text-2xl text-slate-600 mb-6">You have no bookings yet.</p>
+            <a href="{% url 'home' %}" class="inline-block bg-primary-blue text-white py-3 px-8 rounded-full font-semibold text-lg hover:bg-secondary-orange transition-all transform hover:-translate-y-1 shadow-md">Find a Car to Rent</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
